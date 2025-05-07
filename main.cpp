@@ -13,5 +13,7 @@ int main() {
 
     g.primMST();
 
+    g.printGraph();
+
     return 0;
 }
