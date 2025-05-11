@@ -2,6 +2,8 @@
 #define GRAPH_H
 #include <climits>
 
+#include "heap.h"
+
 using namespace std;
 
 class Graph {
@@ -38,7 +40,40 @@ public:
     };
 
     void primMST() {
-        cout << "primMST successfully called on the graph." << endl;
+        int* p = new int[numVertices];
+        int* k = new int[numVertices];
+        int cost = 0;
+
+        for (int i = 0; i < numVertices; i++) {
+            p[i] = -1;
+            k[i] = inf;
+        }
+
+        k[0] = 0;
+
+        MinHeap minHeap(numVertices);
+        for (int i = 0; i < numVertices; i++) {
+            minHeap.insert(i, k[i]);
+        }
+
+        while (!minHeap.isEmpty()) {
+            int v = minHeap.extractMin();
+
+            for (int i = 0; i < numVertices; i++) {
+                int edgeWeight = adjMatrix[v][i];
+                if (edgeWeight != inf && minHeap.isInMinHeap(i) && edgeWeight < k[i]) {
+                    k[i] = edgeWeight;
+                    p[i] = v;
+                    minHeap.decreaseKey(i, edgeWeight);
+                }
+            }
+        }
+
+        for (int i = 1; i < numVertices; i++) {
+            cout << p[i] << "--" << i << " (Edge Weight: " << adjMatrix[i][i] << ")" << endl;
+            cost += adjMatrix[i][i];
+        }
+        cout << "MST total cost: " << cost << endl;
     };  // Must print MST edges and total weight
 
 private:
