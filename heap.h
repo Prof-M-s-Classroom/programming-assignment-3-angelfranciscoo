@@ -24,6 +24,7 @@ public:
         keyArray[vertex] = key;
         size++;
 
+        //Taking care of the array updates during each and every vertex insertion while also upheapifying
         int i = position[vertex];
         while (i > 0 && keyArray[heapArray[i]] < keyArray[heapArray[(i - 1) / 2]]) {
             if (keyArray[heapArray[(i - 1) / 2]] > keyArray[heapArray[i]]) {
@@ -35,6 +36,8 @@ public:
             }
         }
     };
+
+    //Pull lowest cost
     int extractMin() {
         int minVertex = heapArray[0];
         heapArray[0] = heapArray[size - 1]; //Bring last element in heap to the top
@@ -44,8 +47,12 @@ public:
 
         minHeapify(0);
 
+        position[minVertex] = -1;
+
         return minVertex;
     };
+
+    //Add the lowest cost edge and then upheapify
     void decreaseKey(int vertex, int newKey) {
         keyArray[vertex] = newKey;
 
@@ -74,6 +81,7 @@ private:
     int capacity;
     int size;
 
+    //Challenged myself to create minHeapify recursively instead of iteratively
     void minHeapify(int idx) {
         int i = idx;
         if (idx * 2 + 1 < size && keyArray[heapArray[idx * 2 + 1]] < keyArray[heapArray[i]]) {
