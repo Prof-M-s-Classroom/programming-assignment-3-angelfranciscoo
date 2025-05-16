@@ -64,10 +64,12 @@ public:
             minHeap.insert(i, k[i]);
         }
 
-        //Keeps extracting the lowest edge cost and adds it to the final MST
+        //Keeps extracting the lowest edge cost and adds it to the final MST -- runs O(n)
         while (!minHeap.isEmpty()) {
+            //Runs O(log(n))
             int v = minHeap.extractMin();
 
+            //Runs O(n) per extract
             for (int i = 0; i < numVertices; i++) {
                     int edgeWeight = adjMatrix[v][i];
 
